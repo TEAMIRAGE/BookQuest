@@ -1,5 +1,5 @@
 (Team Mirage)
-Library Management System - Afourathon
+BookQuest
 # Program file structure
 Folders and files are already provided in an structured way. 
 

@@ -1,0 +1,98 @@
+<%- include('header.ejs') %>
+
+<section class="bg-customColorBlack w-full h-screen">
+    <div class="pt-32 pb-12 text-black flex flex-col items-center">
+        <p class="text-3xl sm:text-5xl lg:text-6xl mx-32 text-white font-bold">Add Manual ID</p>
+    </div>
+    <div class="flex flex-col justify-center items-center absolute top-0 left-0 right-0 bottom-0">
+        <div
+            class="border-4 bg-white w-2/3 border-solid border-white xsm:m-4 p-2 md:px-10 py-6 rounded-xl flex-col justify-center items-center">
+            <form class="test-form flex">
+                <div class="w-1/5 mx-4">
+                    <div class="img-div w-full h-full">
+                        <img src="<%= details.profileUrl %>" alt="Image" class="object-cover h-full w-full">
+                    </div>
+                </div>
+                <div class="w-4/5 mx-4">
+                    <div class="div-test mx-2 my-4" id="data-id" data-id="<%= details._id %>">
+                        <h3 class="text-2xl font-bold">Book Name : <%= details.name %></h3>
+                    </div>
+
+                    <div class="div-test mx-2 my-4">
+                        <h3 class="text-2xl font-bold">Author Name : <%= details.author %></h3>
+                    </div>
+
+                    <div class="div-test mx-2 my-4">
+                        <input type="text" name="manualID" placeholder="Manual ID"
+                            class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required />
+                    </div>
+                    <div class="manualID-error"></div>
+
+                    <div
+                        class="button request-book-btn bg-blue-500 w-auto text-white px-4 py-2 rounded-md hover:bg-blue-600 cursor-pointer">
+                        <input type="submit" value="Submit" class="w-full m-2 hover:bg-blue-600 cursor-pointer">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    const form = document.querySelector('.test-form');
+    const manualIdError = document.querySelector('.manualID-error');
+    const hiddenId = document.getElementById('data-id');
+    const dataId = hiddenId.getAttribute('data-id');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // reset errors
+        manualIdError.textContent = '';
+
+        //get the values
+
+        const manualID = form.manualID.value;
+
+        try {
+            const res = await fetch(`/api/add-existing-book-form/${dataId}`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    manualID: manualID
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await res.json();
+
+            if (data
+                .errors
+            ) { //data represents the request sending object, where errors is created variable in request side
+                manualIdError.textContent = data.errors.adminManualIdStatus;
+
+            }
+
+
+
+            if (data
+                .newUser
+            ) { // .newUser is variable returned through json object from above route
+
+                location.assign('/');
+            }
+
+
+        } catch (err) {
+            console.log(err);
+        }
+
+    });
+</script>
+
+
+
+
+<%- include('footer.ejs') %>

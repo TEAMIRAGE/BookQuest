@@ -1,0 +1,272 @@
+<%- include('header.ejs') %>
+
+<!-- Hero Section -->
+<section class="cover bg-customColorBlack w-full h-screen">
+    <div class="h-full">
+        <img src="../images/bg3.jpg" class="cover blur-[6px] w-full h-full opacity-40">
+    </div>
+    <div class="flex flex-col justify-center items-center absolute top-0 left-0 right-0 bottom-0">
+        <div class="border-4 border-solid border-white xsm:m-4 p-2 md:p-10 flex flex-col justify-center items-center" style="font-family: 'Playfair Display', serif;;" data-aos="fade-up"
+            data-aos-duration="2000">
+            <blockquote class="text-2xl my-4 text-center text-white">"I dont want to be at the mercy of my emotions. I
+                want
+                to use
+                them, to enjoy them, and to dominate them."<br>- The Picture of Dorian Gray</blockquote>
+            <h1 class="text-5xl xsm:text-center sm:text-center text-6xl md:text-5xl my-4 text-white">Famous
+                Novel by Oscar Wilde</h1>
+        </div>
+    </div>
+</section>
+<!-- end hero -->
+
+<!-- start Featured Books -->
+<section class="relative bg-white">
+    <div class="py-8 text-black flex flex-col">
+        <p class="text-3xl sm:text-5xl lg:text-6xl mx-32 my-10" data-aos="zoom-in-down" data-aos-duration="300">Featured
+            Books</p>
+        <div class="p-8 sm:py-12 lg:py-8 flex flex-wrap justify-center" data-aos="fade-up" data-aos-duration="400">
+            <% popularBookSet.forEach((info) => { %>
+            <a href="/specific-book-student/<%= info.id %>"
+                class="flex flex-col items-center mx-2 bg-gray-800 rounded-b-xl border border-black xsm:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 duration-500 hover:scale-110">
+                <div class="bg-white w-full flex justify-center p-4">
+                    <img class="rounded-t-lg h-60 w-40 object-cover" src="<%= info.signedURL %>" alt="" />
+                </div>
+                <div class="p-5">
+                    <h5 class="mb-2 text-3xl font-bold text-center text-white"><%= info.name %></h5>
+                    <h5 class="mb-2 text-lg text-center text-white">By <%= info.author %></h5>
+                </div>
+            </a>
+            <% }); %>
+        </div>
+    </div>
+</section>
+<!-- end Featured Books -->
+
+<!-- Latest added Books -->
+<section class="relative bg-white">
+    <div class="py-8 text-black flex flex-col">
+        <p class="text-3xl sm:text-5xl lg:text-6xl mx-32 my-10" data-aos="zoom-in-down" data-aos-duration="300">Latest
+            Books</p>
+    </div>
+    <div class="p-8 sm:py-12 lg:py-8 flex flex-wrap justify-center" data-aos="fade-up" data-aos-duration="400">
+        <% latestBookSet.forEach((info) => { %>
+        <a href="/specific-book-student/<%= info.id %>"
+            class="flex flex-col items-center mx-2 bg-gray-800 rounded-b-xl border border-black xsm:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 duration-500 hover:scale-110">
+            <div class="mb-4 bg-white w-full flex justify-center">
+                <img class="rounded-t-lg h-96 w-100 object-cover" src="<%= info.signedURL %>"></img>
+            </div>
+            <div class="flex flex-col items-center my-2">
+                <h3 class="mb-2 text-2xl font-bold text-center text-white"><%= info.name %></h3>
+                <h3 class="mb-2 text-md text-center text-white">By <%= info.author %></h3>
+            </div>
+        </a>
+        <% }); %>
+    </div>
+</section>
+<!-- end Latest Books -->
+
+<!-- start Yearwise Books -->
+<section class="relative bg-white">
+    <div class="pt-8 pb-2 text-black flex flex-col">
+        <p class="text-3xl sm:text-5xl lg:text-6xl mx-32 my-10" data-aos="zoom-in-down" data-aos-duration="300">Books by
+            Year</p>
+    </div>
+    <div class="py-8 text-black flex justify-between">
+        <p class="text-3xl mx-32 my-2 font-bold">First Year</p>
+        <a href="/books/genre/firstYear-All" class="text-3xl mx-32 my-2 font-bold">View All</a>
+    </div>
+    <div class="p-8 sm:py-12 lg:py-8 flex flex-wrap justify-center" data-aos="fade-up" data-aos-duration="400">
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                <% firstYearBookSet.forEach((info) => { %>
+                <div class="swiper-slide">
+                    <a href="/specific-book-student/<%= info.id %>"
+                        class="flex flex-col items-center mx-2 bg-gray-800 rounded-b-xl border border-black">
+                        <div class="mb-4 bg-white w-full flex justify-center">
+                            <img class="rounded-t-lg h-96 w-100 object-cover" src="<%= info.signedURL %>"></img>
+                        </div>
+                        <div class="flex flex-col items-center flex-grow my-2">
+                            <h3 class="mb-2 text-2xl font-bold text-center text-white"><%= info.name %></h3>
+                            <h3 class="mb-2 text-md text-center text-white">By <%= info.author %></h3>
+                        </div>
+                    </a>
+                </div>
+                <% }); %>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+    <div class="py-8 text-black flex justify-between">
+        <p class="text-3xl mx-32 my-2 font-bold">Second Year</p>
+        <a href="/books/genre/secondYear-All" class="text-3xl mx-32 my-2 font-bold">View All</a>
+    </div>
+    <div class="p-8 sm:py-12 lg:py-8 flex flex-wrap justify-center" data-aos="fade-up" data-aos-duration="400">
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                <% secondYearBookSet.forEach((info) => { %>
+                <div class="swiper-slide">
+                    <a href="/specific-book-student/<%= info.id %>"
+                        class="flex flex-col items-center mx-2 bg-gray-800 rounded-b-xl border border-black">
+                        <div class="mb-4 bg-white w-full flex justify-center">
+                            <img class="rounded-t-lg h-96 w-100 object-cover" src="<%= info.signedURL %>"></img>
+                        </div>
+                        <div class="flex flex-col items-center flex-grow my-2">
+                            <h3 class="mb-2 text-2xl font-bold text-center text-white"><%= info.name %></h3>
+                            <h3 class="mb-2 text-md text-center text-white">By <%= info.author %></h3>
+                        </div>
+                    </a>
+                </div>
+                <% }); %>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+    <div class="py-8 text-black flex justify-between">
+        <p class="text-3xl mx-32 my-2 font-bold">Third Year</p>
+        <a href="/books/genre/thirdYear-All" class="text-3xl mx-32 my-2 font-bold">View All</a>
+    </div>
+    <div class="p-8 sm:py-12 lg:py-8 flex flex-wrap justify-center" data-aos="fade-up" data-aos-duration="400">
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                <% thirdYearBookSet.forEach((info) => { %>
+                <div class="swiper-slide">
+                    <a href="/specific-book-student/<%= info.id %>"
+                        class="flex flex-col items-center mx-2 bg-gray-800 rounded-b-xl border border-black">
+                        <div class="mb-4 bg-white w-full flex justify-center">
+                            <img class="rounded-t-lg h-96 w-100 object-cover" src="<%= info.signedURL %>"></img>
+                        </div>
+                        <div class="flex flex-col items-center flex-grow my-2">
+                            <h3 class="mb-2 text-2xl font-bold text-center text-white"><%= info.name %></h3>
+                            <h3 class="mb-2 text-md text-center text-white">By <%= info.author %></h3>
+                        </div>
+                    </a>
+                </div>
+                <% }); %>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+    <div class="py-8 text-black flex justify-between">
+        <p class="text-3xl mx-32 my-2 font-bold">Fourth Year</p>
+        <a href="/books/genre/fourthYear-All" class="text-3xl mx-32 my-2 font-bold">View All</a>
+    </div>
+    <div class="p-8 sm:py-12 lg:py-8 flex flex-wrap justify-center" data-aos="fade-up" data-aos-duration="400">
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                <% fourthYearBookSet.forEach((info) => { %>
+                <div class="swiper-slide">
+                    <a href="/specific-book-student/<%= info.id %>"
+                        class="flex flex-col items-center mx-2 bg-gray-800 rounded-b-xl border border-black">
+                        <div class="mb-4 bg-white w-full flex justify-center">
+                            <img class="rounded-t-lg h-96 w-100 object-cover" src="<%= info.signedURL %>"></img>
+                        </div>
+                        <div class="flex flex-col items-center flex-grow my-2">
+                            <h3 class="mb-2 text-2xl font-bold text-center text-white"><%= info.name %></h3>
+                            <h3 class="mb-2 text-md text-center text-white">By <%= info.author %></h3>
+                        </div>
+                    </a>
+                </div>
+                <% }); %>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</section>
+<!-- end Yearwise Books -->
+
+<!-- start Genres -->
+<section class="bg-white p-4">
+    <div class="flex items-center xsm:my-2 xsm:justify-center md:my-10 md:justify-between lg:mx-20 xl:mx-32">
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-bold" data-aos="zoom-in-down" data-aos-duration="300">
+            Top 10 Books on
+        </h1>
+    </div>
+    <div class="xsm:py-6 sm:py-8 md:py-12 lg:py-8 xl:py-8 flex flex-wrap justify-center" data-aos="fade-up"
+        data-aos-duration="400">
+        <a href="/books/genre/biography-All"
+            class="p-4 sm:p-6 m-2 h-full w-full bg-[#DAF5FF] xsm:w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 duration-500 hover:scale-110">
+            <div class="flex flex-col justify-center items-center">
+                <img src="./images/course.png" class="cover h-12 sm:h-20 w-12 sm:w-20">
+                <h3 class="text-lg xsm:text-xl sm:text-3xl font-bold py-2 sm:py-4">Biography</h3>
+                <p class="text-md xsm:text-lg sm:text-xl">Explore Now</p>
+            </div>
+        </a>
+        <a href="/books/genre/fiction-All"
+            class="p-4 sm:p-6 m-2 h-full w-full bg-[#FBFFB1] xsm:w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 duration-500 hover:scale-110">
+            <div class="flex flex-col justify-center items-center">
+                <img src="./images/fiction.png" class="h-12 sm:h-20 w-12 sm:w-20">
+                <h3 class="text-lg xsm:text-xl sm:text-3xl font-bold py-2 sm:py-4">Fiction</h3>
+                <p class="text-md xsm:text-lg sm:text-xl">Explore Now</p>
+            </div>
+        </a>
+        <a href="/books/genre/history-All"
+            class="p-4 sm:p-6 m-2 h-full w-full bg-[#FFFBEB] xsm:w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 duration-500 hover:scale-110">
+            <div class="flex flex-col justify-center items-center">
+                <img src="./images/novel.png" class="h-12 sm:h-20 w-12 sm:w-20">
+                <h3 class="text-lg xsm:text-xl sm:text-3xl font-bold py-2 sm:py-4">History</h3>
+                <p class="text-md xsm:text-lg sm:text-xl">Explore Now</p>
+            </div>
+        </a>
+        <a href="/books/genre/science-All"
+            class="p-4 sm:p-6 m-2 h-full w-full bg-[#F8E8EE] xsm:w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 duration-500 hover:scale-110">
+            <div class="flex flex-col justify-center items-center">
+                <img src="./images/science.png" class="h-12 sm:h-20 w-12 sm:w-20">
+                <h3 class="text-lg xsm:text-xl sm:text-3xl font-bold py-2 sm:py-4">Science</h3>
+                <p class="text-md xsm:text-lg sm:text-xl">Explore Now</p>
+            </div>
+        </a>
+        <a href="/books/genre/comic-All"
+            class="p-4 sm:p-6 m-2 h-full w-full bg-[#EEEEEE] xsm:w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 duration-500 hover:scale-110">
+            <div class="flex flex-col justify-center items-center">
+                <img src="./images/art.png" class="h-12 sm:h-20 w-12 sm:w-20">
+                <h3 class="text-lg xsm:text-xl sm:text-3xl font-bold py-2 sm:py-4">Comics</h3>
+                <p class="text-md xsm:text-lg sm:text-xl">Explore Now</p>
+            </div>
+        </a>
+    </div>
+</section>
+<!-- end Genres -->
+
+<!-- start About -->
+<section id="bottom" class="relative xsm:px-8 sm:px-8 lg:px-16 xl:px-40 bg-[#FFF5CB]"
+    style="font-family: 'Pacifico', cursive;">
+    <div class="py-8 flex flex-col lg:flex-row justify-around">
+        <div class="flex-col w-full lg:w-1/2">
+            <p class="text-4xl font-bold mb-4 xsm:text-center md:text-left" data-aos="zoom-in" data-aos-duration="1000">
+                MUST READ</p>
+            <img src="./images/bookCover.jpg" class="h-[600px] w-[500px]" data-aos="zoom-in" data-aos-duration="1200">
+        </div>
+        <div class="w-full lg:w-1/2 flex flex-col mt-8" data-aos="zoom-in" data-aos-duration="2000">
+            <p class="text-red-900 font-bold text-xl lg:text-2xl my-6">Oscar Wilde</p>
+            <p class="text-lg my-6 lg:text-5xl">The Picture of Dorian Gray</p>
+            <p class="text-lg my-6 lg:text-xl">Oscar Wilde’s only novel is the dreamlike story of a
+                young man
+                who sells his soul for eternal youth and beauty.
+
+                In this celebrated work Wilde forged a devastating portrait of the effects of evil
+                and
+                debauchery on a young aesthete in late-19th-century England. Combining elements of
+                the Gothic
+                horror novel and decadent French fiction, the book centers on a striking premise: As
+                Dorian Gray
+                sinks into a life of crime and gross sensuality, his body retains perfect youth and
+                vigor while
+                his recently painted portrait grows day by day into a hideous record of evil, which
+                he must keep
+                hidden from the world. For over a century, this mesmerizing tale of horror and
+                suspense has
+                enjoyed wide popularity.</p>
+        </div>
+    </div>
+</section>
+<!-- end About -->
+
+<%- include('footer.ejs') %>

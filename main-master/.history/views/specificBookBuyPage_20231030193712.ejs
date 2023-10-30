@@ -1,0 +1,119 @@
+<%- include('header.ejs') %>
+<section class="cover bg-customColorBlack w-full h-screen">
+  <div class="h-full">
+    <img
+      src="../images/bg3.jpg"
+      class="cover blur-[6px] w-full h-full opacity-40"
+    />
+  </div>
+
+  <div
+    class="flex justify-around items-center absolute top-0 left-0 right-0 bottom-0"
+  >
+    <div
+      class="border-4 bg-white w-3/5 border-solid border-white xsm:m-4 p-2 md:px-10 py-6 rounded-xl flex-col justify-center items-center"
+    >
+      <div id="data-id" data-id="<%= details._id %>" class="flex">
+        <div class="w-1/5 mx-4">
+          <div class="img-div w-full h-full">
+            <img
+              src="<%= details.profileUrl %>"
+              alt="Image"
+              class="object-cover h-full w-full"
+            />
+          </div>
+        </div>
+        <div class="w-4/5 mx-4">
+          <div class="div-test mx-2 my-4">
+            <h3 class="text-2xl font-bold">Book Name : <%= details.name %></h3>
+          </div>
+
+          <div class="div-test mx-2 my-4">
+            <h3 class="text-2xl font-bold">
+              Author Name : <%= details.author %>
+            </h3>
+          </div>
+
+          <div class="div-test mx-2 my-4">
+            <h3 class="text-2xl font-bold">Description:</h3>
+            <p class="text-md font-bold"><%= details.description %></p>
+          </div>
+
+          <div class="div-test mx-2 my-4">
+            <% if (details.availableCount > 0){ %>
+            <h3 class="text-2xl font-bold">
+              No. of Books available: <%= details.availableCount %>
+            </h3>
+            <% } else { %>
+            <h3 class="text-2xl font-bold">
+              Currently this book is not available!
+            </h3>
+            <% } %>
+          </div>
+          <% if (details.availableCount > 0){ %> <% if (details.alreadyRequested
+          == 1) { %>
+          <p class="text-2xl font-bold">Already requested, Status:Pending</p>
+          <% } else { %>
+          <button
+            class="request-book-btn bg-blue-500 w-full text-white px-4 py-2 rounded-md hover:bg-blue-600 cursor-pointer"
+          >
+            Request Book
+          </button>
+          <% } %> <% } %>
+        </div>
+      </div>
+    </div>
+    <div
+      class="w-1/6 flex flex-col justify-center mb-4 border-2 border-solid border-white rounded-xl p-4"
+    >
+      <h5 class="text-3xl font-bold text-center">
+        Ask anything related to this book
+      </h5>
+
+      <a
+        href="/ai-chat/<%= details._id %>"
+        style="padding: 10px 20px; border: 3px solid black"
+        >Chat with AI</a
+      >
+    </div>
+  </div>
+</section>
+
+<!-- Ai powered button -->
+
+<script>
+  // Book Request Process ------------
+
+  const requestBtn = document.querySelector(".request-book-btn");
+  const hiddenId = document.getElementById("data-id");
+  const dataId = hiddenId.getAttribute("data-id");
+
+  requestBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch(`/specfic-buy-book/${dataId}`, {
+        method: "GET",
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        //data represents the request sending object, where errors is created variable in request side
+        window.alert("Book requested!");
+        window.location.href = `/specific-book-student/${dataId}`;
+      }
+
+      if (data.failure) {
+        // .failure is variable returned through json object from above route
+
+        window.alert(data.failure.message);
+        window.location.href = `/specific-book-student/${dataId}`;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+</script>
+
+<%- include('footer.ejs') %>

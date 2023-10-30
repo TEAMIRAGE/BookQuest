@@ -1,0 +1,109 @@
+<%- include('header.ejs') %>
+<section class="bg-customColorBlack w-full h-auto">
+    <div class="pt-32 pb-12 text-black flex flex-col items-center">
+        <p class="text-3xl sm:text-5xl lg:text-6xl mx-32 text-white font-bold">Books List</p>
+    </div>
+    <div class="flex flex-col items-center">
+        <div class="flex flex-col w-4/5 mb-8">
+            <form class="test-form">
+                <div class="flex">
+                    <div class='test-block w-2/5 mx-4'>
+                        <input type="text" name="name" placeholder="Book Name"
+                            class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required />
+                    </div>
+
+                    <div class='test-block w-2/5 mx-4'>
+                        <input type="text" name="author" placeholder="Author Name"
+                            class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required />
+                    </div>
+                    <div class="button w-1/5 mx-4">
+                        <input type="submit" value="Search"
+                            class="bg-blue-500 w-full text-white font-semibold px-4 py-2 rounded-md hover:bg-blue-600 cursor-pointer" />
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <table class="text-md bg-white shadow-md rounded-xl mt-12 mb-8">
+            <thead class="border-b">
+                <tr>
+                    <th class="text-left p-4">Book Name</th>
+                    <th class="text-left p-4">Book Author</th>
+                    <th class="text-left p-4">Quantity</th>
+                    <th class="text-left p-4">Book ID's</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% details.forEach((info) => { %>
+                <tr>
+                    <td class="p-4"><%= info.name %></td>
+                    <td class="p-4"><%= info.author %></td>
+                    <td class="p-4 text-center"><%= info.quantity %></td>
+                    <td class="p-4 flex justify-start items-center">
+                        <button>
+                            <a href="/specific-book-manaulId-list/<%= info._id %>"
+                                class="px-4 py-2 rounded text-sm bg-blue-500 hover:bg-blue-700 text-white focus:outline-none focus:shadow-outline">View
+                                ID</a>
+                        </button>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+</section>
+
+
+<script>
+    const form = document.querySelector('.test-form');
+
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = form.name.value;
+        const author = form.author.value;
+
+        try {
+
+            const res = await fetch(`/search-form-book-admin`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    name: name,
+                    author: author
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await res.json();
+
+            if (data
+                .success
+            ) { //data represents the request sending object, where errors is created variable in request side
+
+                window.location.href = `/specific-book-manaulId-list/${data.success}`;
+
+            }
+
+
+
+            if (data.failure) { // .failure is variable returned through json object from above route
+
+                window.alert(data.failure.message);
+                window.location.href = `/all-books-info`;
+            }
+
+
+        } catch (err) {
+            console.log(err);
+        }
+
+
+    });
+</script>
+
+
+<%- include('footer.ejs') %>

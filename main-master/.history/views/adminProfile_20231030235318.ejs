@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AFourathon | Lib Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="../css/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Lobster&family=Pacifico&family=Roboto&family=Sacramento&family=Zeyada&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Freehand&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html,
+    body {
+        height: 100%;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    /* NAVBAR */
+    .navbar {
+        /* position: fixed; */
+        top: 0;
+        width: 100%;
+        z-index: 999;
+        min-height: 70px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 24px;
+    }
+
+    .nav-menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 60px;
+    }
+
+    .nav-link {
+        position: relative;
+        text-transform: uppercase;
+        font-weight: bolder;
+        color: black;
+    }
+
+    .nav-link:hover {
+        color: black;
+    }
+
+    .nav-link::before {
+        content: "";
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: black;
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .nav-link:hover::before {
+        transform: scaleX(1);
+    }
+
+    .nav-branding {
+        font-size: 4rem;
+        font-family: 'Freehand', cursive;
+        color: black;
+    }
+
+    /* HAMBURGER */
+
+    .hamburger {
+        display: none;
+        cursor: pointer;
+    }
+
+    .hamburger {
+        background-color: white;
+        color: black;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .hamburger.scrolled {
+        background-color: black;
+        color: white;
+    }
+
+    .bar {
+        display: block;
+        width: 25px;
+        height: 3px;
+        margin: 5px auto;
+        transition: all 0.3s ease-in-out;
+        background-color: black;
+    }
+
+    @media(max-width:768px) {
+        .hamburger {
+            display: block;
+        }
+
+        .hamburger.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active .bar:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .hamburger.active .bar:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        .nav-menu {
+            font-family: 'Indie Flower', cursive;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            left: -100%;
+            top: 70px;
+            background-color: black;
+            color: white;
+            width: 100%;
+            height: 100%;
+            transition: 0.3s;
+        }
+
+        .nav-menu-sub {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            text-align: center;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            z-index: 1;
+            letter-spacing: 0.6rem;
+        }
+
+        .nav-item:nth-child(1) {
+            margin-top: 40px;
+        }
+
+        .nav-branding {
+            font-size: 2rem;
+            letter-spacing: 0.4rem;
+        }
+
+        .nav-item {
+            margin: 8px 0;
+        }
+
+        .nav-menu.active {
+            left: 0;
+        }
+    }
+</style>
+
+<body class="flex bg-gray-100 min-h-screen">
+    <div class="flex-grow text-gray-800">
+        <header class="flex items-center h-20 px-6 sm:px-10 bg-white">
+            <nav class="navbar bg-transparent text-white bg-opacity-50 sticky top-0 left-0 right-0 navbar-scroll">
+                <a href="/" class="nav-branding w-auto">BookQuest</a>
+
+                <ul class="nav-menu w-[60%] flex justify-between">
+                    <div class="nav-menu-sub flex">
+                        <li class="nav-item mx-4">
+                            <a href="/" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item mx-4">
+                            <a href="/aboutUs" class="nav-link">About Us</a>
+                        </li>
+                        <li class="nav-item mx-4">
+                            <a href="/book-gallery" class="nav-link">Book Gallery</a>
+                        </li>
+                    </div>
+                    <div class="nav-menu-sub flex items-center">
+                        <% if (user) {%>
+                        <li class="nav-item mx-4">
+                            <div class="max-w-lg mx-auto">
+                                <div class="flex">
+                                    <div class="flex mx-4 py-2.5">
+                                        <h3><a href="/student-notifications"><i
+                                                    class="fa fa-bell duration-500 hover:scale-110"
+                                                    style="font-size:32px;color:goldenrod"></i></a></h3>
+                                        <% if (user.messageCount > 0){ %>
+                                        <span><%= user.messageCount %></span>
+                                        <% } else {%>
+                                        <span>0</span>
+                                        <% } %>
+                                    </div>
+                                    <img src="<%= user.profileUrl %>" alt=""
+                                        class="py-2.5 rounded-full h-[3.25rem] w-[3.25rem]">
+                                    <button
+                                        class="text-white bg-transparent rounded-lg text-md px-4 py-2.5 text-center inline-flex items-center"
+                                        type="button" data-dropdown-toggle="dropdown"><%= user.name %>
+                                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <!-- Dropdown menu -->
+                                <div class="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4"
+                                    id="dropdown">
+                                    <ul class="py-1" aria-labelledby="dropdown">
+                                        <li>
+                                            <a href="/student-profile/<%= user._id %>"
+                                                class="block text-sm hover:bg-gray-100 text-gray-700 block px-16 py-2">Profile</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item mx-4">
+                            <a href="/logout" class="nav-link">Logout</a>
+                        </li>
+
+                        <% } else if (admin) { %>
+                        <li class="nav-item mx-4">
+                            <div class="max-w-lg mx-auto">
+                                <div class="flex">
+                                    <img src="<%= admin.profileUrl %>" alt=""
+                                        class="py-2.5 rounded-full h-[3.25rem] w-[3.25rem]">
+                                    <button
+                                        class="text-black bg-transparent rounded-lg text-md px-4 py-2.5 text-center inline-flex items-center"
+                                        type="button" data-dropdown-toggle="dropdown"><%= admin.name %>
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item mx-4">
+                            <a href="/logout" class="nav-link">Logout</a>
+                        </li>
+
+                        <% } else {%>
+
+                        <li class="nav-item mx-4">
+                            <a href="/login-options" class="nav-link">Login</a>
+                        </li>
+                        <li class="nav-item mx-4">
+                            <a href="/student-signup" class="nav-link">Signup</a>
+                        </li>
+
+                        <% } %>
+                    </div>
+                </ul>
+
+                <div class="hamburger hamburger-scroll">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </header>
+        <main class="p-6 sm:p-10 space-y-6">
+            <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
+                <div class="flex flex-wrap items-start justify-evenly -mb-3">
+                    <a href="/new-book-registration-form">
+                        <button
+                            class="inline-flex px-5 py-3 text-white bg-blue-600 hover:bg-blue-700 focus:bg-purple-700 rounded-md ml-6 mb-3">
+                            Register New Book
+                        </button>
+                    </a>
+                    <a href="/account-request-list">
+                        <button
+                            class="inline-flex px-5 py-3 text-white bg-blue-600 hover:bg-blue-700 focus:bg-purple-700 rounded-md ml-6 mb-3">
+                            Account Requests
+                        </button>
+                    </a>
+                    <a href="/book-request-list">
+                        <button
+                            class="inline-flex px-5 py-3 text-white bg-blue-600 hover:bg-blue-700 focus:bg-purple-700 rounded-md ml-6 mb-3">
+                            Book Requests
+                        </button>
+                    </a>
+                    <a href="/book-transaction-logs">
+                        <button
+                            class="inline-flex px-5 py-3 text-white bg-blue-600 duration-500 hover:scale-105 hover:bg-blue-700 focus:bg-purple-700 rounded-md ml-6 mb-3">
+                            Book Transaction Log
+                        </button>
+                    </a>
+                    <a href="/all-books-info">
+                        <button
+                            class="inline-flex px-5 py-3 text-white bg-blue-600 duration-500 hover:scale-105 hover:bg-blue-700 focus:bg-purple-700 rounded-md ml-6 mb-3">
+                            Book Details
+                        </button>
+                    </a>
+                    <a href="/student-list-admin">
+                        <button
+                            class="inline-flex px-5 py-3 text-white bg-blue-600 hover:bg-blue-700 focus:bg-purple-700 rounded-md ml-6 mb-3">
+                            Student Details
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <section class="flex w-full">
+                <div class="flex w-1/2 flex-col md:col-span-2 md:row-span-2 bg-white shadow rounded-lg mx-2 gap-6">
+                    <div class="px-6 py-5 font-semibold border-b border-gray-100">Book Analytics</div>
+                    <div class="p-4 flex-grow">
+                        <div class="w-full flex flex-col justify-center">
+                            <div class="w-full flex justify-center mt-8">
+                                <div class="bg-white rounded-lg border-2 border-white flex flex-col w-2/3">
+                                    <div class="flex">
+                                        <canvas id="barChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p id='fiction' data-id='<%= allGenreCount.fictionDataCount %>' class="hidden">
+                        <%= allGenreCount.fictionDataCount %></p>
+                    <p id='bio' data-id='<%= allGenreCount.biographyDataCount %>' class="hidden">
+                        <%= allGenreCount.biographyDataCount %></p>
+                    <p id='science' data-id='<%= allGenreCount.scienceDataCount %>' class="hidden">
+                        <%= allGenreCount.scienceDataCount %></p>
+                    <p id='comic' data-id='<%= allGenreCount.comicDataCount %>' class="hidden">
+                        <%= allGenreCount.comicDataCount %></p>
+                    <p id='history' data-id='<%= allGenreCount.historyDataCount %>' class="hidden">
+                        <%= allGenreCount.historyDataCount %></p>
+                </div>
+                <div class="w-1/2 flex flex-col md:col-span-2 md:row-span-2 bg-white shadow rounded-lg mx-2 gap-6">
+                    <div class="px-6 py-5 font-semibold border-b border-gray-100">Update Profile</div>
+                    <div class="p-4 flex-grow">
+                        <div class="flex">
+                            <div class="img-div flex items-center m-2 w-1/4">
+                                <img src="<%= details.profileUrl %>" alt="Image" class="rounded-lg cover w-full h-full">
+                            </div>
+
+                            <div class="m-2 w-3/4 z-10">
+                                <form class="test-form" action="/api/admin-profile-update/<%= details._id %>"
+                                    method="post" enctype="multipart/form-data">
+                                    <div
+                                        class="fileUpload-block flex w-full m-2 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <div class="flex items-center font-bold text-lg">
+                                            <h3>Update Image</h3>
+                                        </div>
+                                        <div class="mx-4">
+                                            <input type="file" name="file" />
+                                        </div>
+                                    </div>
+
+                                    <div class="div-test flex w-full">
+                                        <div class="w-1/2 m-2">
+                                            <input type="text" name="name" placeholder="Book name"
+                                                value="<%= details.name %>"
+                                                class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                required />
+                                        </div>
+                                        <div class="w-1/2 m-2">
+                                            <input type="text" name="email" placeholder="Email Id"
+                                                value="<%= details.email %>"
+                                                class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                required />
+                                        </div>
+                                    </div>
+
+                                    <div class="button flex justify-center w-full">
+                                        <input type="submit" value="Update"
+                                            class="p-2 m-2 w-full text-white bg-blue-500 duration-500 hover:bg-blue-700 rounded-lg border-none cursor-pointer">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="flex gap-6 justify-evenly w-full">
+                <div class="flex items-center p-8 bg-white shadow rounded-lg">
+                    <div
+                        class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-blue-600 bg-blue-100 rounded-full mr-6">
+                        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="red" class="h-6 w-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </div>
+                    <div>
+                        <span id='fiction' data-id='<%= allGenreCount.fictionDataCount %>'
+                            class="block text-2xl font-bold">
+                            <%= allGenreCount.fictionDataCount %></span>
+                        <span class="block text-gray-500">Fiction Books</span>
+                    </div>
+                </div>
+                <div class="flex items-center p-8 bg-white shadow rounded-lg">
+                    <div
+                        class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-blue-600 bg-blue-100 rounded-full mr-6">
+                        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </div>
+                    <div>
+                        <span id='fiction' data-id='<%= allGenreCount.biographyDataCount %>'
+                            class="block text-2xl font-bold">
+                            <%= allGenreCount.biographyDataCount %></span>
+                        <span class="block text-gray-500">Biography Books</span>
+                    </div>
+                </div>
+                <div class="flex items-center p-8 bg-white shadow rounded-lg">
+                    <div
+                        class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-blue-600 bg-blue-100 rounded-full mr-6">
+                        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="yellow" class="h-6 w-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </div>
+                    <div>
+                        <span id='fiction' data-id='<%= allGenreCount.scienceDataCount %>'
+                            class="block text-2xl font-bold">
+                            <%= allGenreCount.scienceDataCount %></span>
+                        <span class="block text-gray-500">Science Books</span>
+                    </div>
+                </div>
+                <div class="flex items-center p-8 bg-white shadow rounded-lg">
+                    <div
+                        class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-blue-600 bg-blue-100 rounded-full mr-6">
+                        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="green" class="h-6 w-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </div>
+                    <div>
+                        <span id='fiction' data-id='<%= allGenreCount.comicDataCount %>'
+                            class="block text-2xl font-bold">
+                            <%= allGenreCount.comicDataCount %></span>
+                        <span class="block text-gray-500">Comic Books</span>
+                    </div>
+                </div>
+                <div class="flex items-center p-8 bg-white shadow rounded-lg">
+                    <div
+                        class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-blue-600 bg-blue-100 rounded-full mr-6">
+                        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="purple" class="h-6 w-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </div>
+                    <div>
+                        <span id='fiction' data-id='<%= allGenreCount.historyDataCount %>'
+                            class="block text-2xl font-bold">
+                            <%= allGenreCount.historyDataCount %></span>
+                        <span class="block text-gray-500">History Books</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer class="flex justify-center w-full text-white bg-gray-900">
+            <div class="container px-6 py-6">
+                <h1 class="text-lg font-bold text-center lg:text-2xl">
+                    Never miss out on new Book updates.
+                </h1>
+
+                <div class="flex flex-col justify-center mx-auto mt-6 space-y-3 md:space-y-0 md:flex-row">
+                    <input id="email" type="text"
+                        class="px-4 py-2 border rounded-md bg-gray-800 text-gray-300 border-gray-600 focus:border-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:ring-blue-300"
+                        placeholder="Email Address">
+
+                    <button
+                        class="w-full px-6 py-2.5 text-sm font-medium tracking-wider text-white transition-colors duration-300 transform md:w-auto md:mx-4 focus:outline-none bg-gray-800 rounded-lg hover:bg-gray-700 focus:ring focus:ring-gray-300 focus:ring-opacity-80">
+                        Subscribe
+                    </button>
+                </div>
+
+                <hr class="h-px bg-gray-700 border-none my-7">
+
+                <div class="flex flex-col items-center justify-between md:flex-row">
+                    <a href="#"
+                        class="text-[2rem] tracking-[1.8rem] xsm:tracking-[1rem] md:tracking-[1.8rem]">BookQuest</a>
+
+                    <div class="flex mt-4 md:m-0">
+                        <div class="-mx-4">
+                            <a href="#"
+                                class="px-4 text-sm text-gray-200 transition-colors duration-300 hover:text-blue-400 hover:underline">About</a>
+                            <a href="#"
+                                class="px-4 text-sm text-gray-200 transition-colors duration-300 hover:text-blue-400 hover:underline">Category</a>
+                            <a href="#"
+                                class="px-4 text-sm text-gray-200 transition-colors duration-300 hover:text-blue-400 hover:underline">Authors</a>
+                            <a href="#"
+                                class="px-4 text-sm text-gray-200 transition-colors duration-300 hover:text-blue-400 hover:underline">Contact</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let fiction = document.getElementById('fiction');
+    let fictionData = fiction.getAttribute('data-id');
+    let bio = document.getElementById('bio');
+    let bioData = bio.getAttribute('data-id');
+    let science = document.getElementById('science');
+    let scienceData = science.getAttribute('data-id');
+    let comic = document.getElementById('comic');
+    let comicData = comic.getAttribute('data-id');
+    let history = document.getElementById('history');
+    let historyData = history.getAttribute('data-id');
+
+    const bookCount = [fictionData, bioData, scienceData, comicData, historyData];
+
+    const genres = ['Fiction', 'Biography', 'Science', 'Comic', 'History'];
+
+    const color2 = [
+        'rgba(255, 99, 132)',
+        'rgba(54, 162, 235)',
+        'rgba(255, 206, 86)',
+        'rgba(75, 192, 192)',
+        'rgba(153, 102, 255)',
+        'rgba(255, 159, 64)'
+    ]
+
+    const ctx = document.getElementById('barChart');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: genres,
+            datasets: [{
+                label: '# of Books',
+                data: bookCount,
+                backgroundColor: color2,
+                borderColor: color2
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 30,
+                }
+            }
+        }
+    });
+</script>

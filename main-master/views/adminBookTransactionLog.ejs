@@ -1,0 +1,41 @@
+<%- include('header.ejs') %>
+
+<section class="bg-customColorBlack w-full h-auto">
+    <div class="pt-32 pb-12 text-black flex flex-col items-center">
+        <p class="text-3xl sm:text-5xl lg:text-6xl text-white font-bold">Book Transaction Log</p>
+    </div>
+
+    <div class="text-gray-900 min-h-full pb-16">
+        <div class="flex justify-center">
+            <table class="w-4/5 text-md bg-white shadow-md rounded-xl my-4">
+                <thead class="border-b">
+                    <tr>
+                        <th class="text-left p-4">Student Name</th>
+                        <th class="text-left p-4">Book Name</th>
+                        <th class="text-left p-4">Author Name</th>
+                        <th class="text-left p-4">Book ID</th>
+                        <th class="text-left p-4"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% data.forEach((info) => { %>
+                    <tr>
+                        <td class="p-4"><%= info.studentName %></td>
+                        <td class="p-4"><%= info.bookName %></td>
+                        <td class="p-4"><%= info.authorName %></td>
+                        <td class="p-4"><%= info.adminManualId %></td>
+                        <td class="p-4 flex justify-end items-center">
+                            <button>
+                                <a href="/api-admin-book-return/<%= info.bookId %>/<%= info.adminManualId %>/<%= info.studentId %>"
+                                    class="px-4 py-2 rounded text-sm bg-blue-500 hover:bg-blue-700 text-white focus:outline-none focus:shadow-outline">Return</a>
+                            </button>
+                        </td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<%- include('footer.ejs') %>

@@ -1,0 +1,55 @@
+<%- include('header.ejs') %>
+
+<section class="bg-customColorBlack w-full h-full">
+    <div class="pt-32 pb-12 text-black flex flex-col items-center">
+        <p class="text-3xl sm:text-5xl lg:text-6xl mx-32 text-white font-bold">Book Copies - ID's</p>
+    </div>
+    <div class="flex justify-center">
+        <div class="flex">
+            <div class="pb-12 text-black flex flex-col items-center mx-4">
+                <a href="/admin-book-update-page/<%= details[0].book_details_id %>"
+                    class="text-white text-lg border-white border-2 rounded-lg p-2 duration-500 hover:scale-110">Update
+                    Book</a>
+            </div>
+            <div class="pb-12 text-black flex flex-col items-center mx-4">
+                <a href="/similar-book-add-form/<%= details[0].book_details_id %>"
+                    class="text-white text-lg border-white border-2 rounded-lg p-2 duration-500 hover:scale-110">Add Similar Book</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col items-center">
+        <% if (details.checkMessage === 0) { %>
+
+        <table class="text-white border-2 border-solid border-white">
+            <thead class="border-2 border-solid border-white">
+                <tr>
+                    <th class="border-2 border-solid border-white p-4">Book ID</th>
+                    <th class="border-2 border-solid border-white p-4">Delete Book</th>
+                </tr>
+            </thead>
+        </table>
+
+        <% } else { %>
+
+        <table class="text-white border-2 border-solid border-white">
+            <thead class="text-2xl border-2 border-solid border-white">
+                <tr>
+                    <th class="border-2 border-solid border-white p-4">Book ID</th>
+                    <th class="border-2 border-solid border-white p-4">Delete Book</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% details.forEach((info) => { %>
+                <tr>
+                    <td class="border-2 border-solid border-white p-4"><%= info.admin_id_manual %></td>
+                    <td class="border-2 border-solid border-white p-4"><a href="/admin-book-delete/<%= info._id%>">Delete</a></td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+    <% } %>
+</section>
+
+<%- include('footer.ejs') %>

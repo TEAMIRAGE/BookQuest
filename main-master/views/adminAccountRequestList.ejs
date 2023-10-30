@@ -1,0 +1,84 @@
+<%- include('header.ejs') %>
+
+<section class="bg-customColorBlack w-full h-full">
+  <div class="pt-32 pb-12 text-black flex flex-col items-center">
+    <p class="text-3xl sm:text-5xl lg:text-6xl mx-32 text-white font-bold">Student Account Request</p>
+  </div>
+  <div class="flex flex-col items-center">
+    <table class="text-md bg-white shadow-md rounded-xl mt-12 mb-8">
+      <thead class="">
+        <tr>
+          <th class="text-left p-4">ID</th>
+          <th class="text-left p-4">Name</th>
+          <th class="text-left p-4">Roll No.</th>
+          <th class="text-left p-4">Email</th>
+          <th class="text-left p-4">Year</th>
+          <th class="text-left p-4">Branch</th>
+          <th class="text-left p-4">Username</th>
+          <th class="text-left p-4">Accept</th>
+          <th class="text-left p-4">Reject</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% students.forEach((student) => { %>
+        <tr>
+          <td class="p-4"><%= student._id %></td>
+          <td class="p-4"><%= student.name %></td>
+          <td class="p-4"><%= student.roll_no %></td>
+          <td class="p-4"><%= student.email %></td>
+          <td class="p-4"><%= student.year %></td>
+          <td class="p-4"><%= student.branch %></td>
+          <td class="p-4"><%= student.username %></td>
+          <td class="p-4 flex justify-start items-center">
+            <button>
+              <a href="/api/student-account-request/<%= student._id %>/accept"
+                class="px-4 py-2 rounded text-sm bg-green-500 hover:bg-green-700 text-white focus:outline-none focus:shadow-outline">Accept</a>
+            </button>
+          </td>
+          <td class="p-4 flex justify-start items-center">
+            <button>
+              <a href="/api/student-account-request/<%= student._id %>/reject"
+                class="px-4 py-2 rounded text-sm bg-red-500 hover:bg-red-700 text-white focus:outline-none focus:shadow-outline">Reject</a>
+            </button>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <!-- <table class="text-white border-2 border-solid border-white">
+      <thead class="border-2 border-solid border-white">
+        <tr>
+          <th class="border-2 border-solid border-white p-2">ID</th>
+          <th class="border-2 border-solid border-white p-2">Name</th>
+          <th class="border-2 border-solid border-white p-2">Roll No</th>
+          <th class="border-2 border-solid border-white p-2">Email</th>
+          <th class="border-2 border-solid border-white p-2">Year</th>
+          <th class="border-2 border-solid border-white p-2">Branch</th>
+          <th class="border-2 border-solid border-white p-2">Username</th>
+          <th class="border-2 border-solid border-white p-2">Accept</th>
+          <th class="border-2 border-solid border-white p-2">Reject</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% students.forEach((student) => { %>
+        <tr>
+          <td class="border-2 border-solid border-white p-2"><%= student._id %></td>
+          <td class="border-2 border-solid border-white p-2"><%= student.name %></td>
+          <td class="border-2 border-solid border-white p-2"><%= student.roll_no %></td>
+          <td class="border-2 border-solid border-white p-2"><%= student.email %></td>
+          <td class="border-2 border-solid border-white p-2"><%= student.year %></td>
+          <td class="border-2 border-solid border-white p-2"><%= student.branch %></td>
+          <td class="border-2 border-solid border-white p-2"><%= student.username %></td>
+          <td class="border-2 border-solid border-white p-2"><a
+              href="/api/student-account-request/<%= student._id %>/accept">&#10004;</a></td>
+          <td class="border-2 border-solid border-white p-2"><a
+              href="/api/student-account-request/<%= student._id %>/reject">&#10006;</a></td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table> -->
+  </div>
+</section>
+
+<%- include('footer.ejs') %>

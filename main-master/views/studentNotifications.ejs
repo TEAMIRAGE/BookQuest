@@ -1,0 +1,23 @@
+<%- include('header.ejs') %>
+
+<section class="bg-customColorBlack w-full h-full">
+  <% if (details.checkMessage === 1) { %>
+  <div class="pt-32 pb-12 text-black flex flex-col items-center">
+    <p class="text-3xl mb-8 sm:text-5xl lg:text-6xl mx-32 text-white font-bold">Notifications</p>
+    <a href="/student-notifications-common?id=delete&studentId=<%= details.studentId %>"
+      class="bg-red-500 text-white p-2 m-4 border-none rounded-lg">Delete All messages</a>
+  </div>
+  <div class="flex flex-col justify-center items-center justify-center my-2 w-full">
+    <% details.forEach((message) =>{ %>
+    <div class="w-2/3 bg-white border-l-8 border-cyan-600 text-black p-4 my-4 rounded-lg">
+      <li class="font-bold"><%= message.book_request_status %></li>
+    </div>
+    <% }) %>
+    <% } else { %>
+    <h1>Notifications</h1>
+    <h3>No messages yet!</h3>
+    <% } %>
+  </div>
+</section>
+
+<%- include('footer.ejs') %>

@@ -1,0 +1,174 @@
+<%- include('header.ejs') %>
+
+<section class="cover bg-customColorBlack w-full h-screen">
+  <div class="h-full">
+    <img src="../images/bg3.jpg" class="cover blur-[6px] w-full h-full opacity-40">
+  </div>
+
+  <div class="flex flex-col justify-center items-center absolute top-0 left-0 right-0 bottom-0">
+    <div
+      class="border-4 bg-white w-2/3 border-solid border-white xsm:m-4 p-2 md:px-10 py-6 rounded-xl flex-col justify-center items-center">
+      <form class="test-form">
+        <div class="flex justify-center mb-4">
+          <h5 class="text-3xl font-bold">Student Registration</h5>
+        </div>
+        <div class="mb-4 flex justify-between">
+          <div class="w-2/5 mx-2">
+            <input type="text" name="name" placeholder="Full Name" required
+              class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div class="w-2/5 mx-2">
+            <input type="email" name="email" placeholder="Email" required
+              class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div class="w-1/5 mx-2">
+            <input type="text" name="rollNo" pattern="[0-9]+" placeholder="Roll No." required
+              class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+        </div>
+
+        <div class="mb-4 flex justify-between">
+          <div class="w-1/2 mx-2">
+            <select name="year" required
+              class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option disabled selected>Choose Year</option>
+              <option value="1st year">1st year</option>
+              <option value="2nd year">2nd year</option>
+              <option value="3rd year">3rd year</option>
+              <option value="4th year">4th year</option>
+            </select>
+          </div>
+          <div class="w-1/2 mx-2">
+            <select name="branch"
+              class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option disabled selected>Choose Branch</option>
+              <option value="CSE">CSE</option>
+              <option value="MECH">MECH</option>
+              <option value="CIVIL">CIVIL</option>
+              <option value="ENTC">ENTC</option>
+              <option value="CSE AI">CSE AI</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-4 flex justify-between">
+          <div class="w-1/2 mx-2">
+            <input type="text" name="username" placeholder="Username" required
+              class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <div class="signup-username-error"></div>
+          </div>
+          <div class="w-1/2 mx-2">
+            <input type="password" name="password" placeholder="Password" required
+              class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <div class="signup-password-error"></div>
+          </div>
+        </div>
+
+        <div class="mb-4 flex flex-col w-auto">
+          <p class="mb-1 text-lg font-bold mx-2">Upload Profile Image</p>
+          <input type="file" name="file"
+            class="mx-2 border border-blue-800 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required />
+        </div>
+
+        <div class="mb-4 mt-8 flex justify-center w-auto">
+          <input type="submit" value="Signup"
+            class="bg-blue-500 w-full text-white font-semibold px-4 py-2 rounded-md hover:bg-blue-600 cursor-pointer" />
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.querySelector('.test-form');
+  const userNameError = document.querySelector('.signup-username-error');
+  const passwordError = document.querySelector('.signup-password-error');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // reset errors
+    userNameError.textContent = '';
+    passwordError.textContent = '';
+
+
+    //get the values
+    const name = form.name.value;
+    const rollNo = form.rollNo.value;
+    const year = form.year.value;
+    const branch = form.branch.value;
+    const email = form.email.value;
+    const username = form.username.value;
+    const password = form.password.value;
+    const file = form.file.files[0];
+
+
+
+    try {
+
+      const formInfo = new FormData();
+      formInfo.append('name', name);
+      formInfo.append('rollNo', rollNo);
+      formInfo.append('year', year);
+      formInfo.append('branch', branch);
+      formInfo.append('email', email);
+      formInfo.append('username', username);
+      formInfo.append('password', password);
+      formInfo.append('file', file);
+
+
+
+
+
+      const res = await fetch('/student-signup', {
+        method: 'POST',
+        body: formInfo,
+      });
+
+      const data = await res.json();
+
+      if (data
+        .errors) { //data represents the request sending object, where errors is created variable in request side
+        userNameError.textContent = data.errors.username;
+        passwordError.textContent = data.errors.password;
+      }
+
+
+
+      if (data.newUser) { // .newUser is variable returned through json object from above route
+
+        async function signupComplete() {
+          try {
+            const response = await fetch('/logout', {
+              method: 'GET'
+            });
+
+            if (response.ok) {
+              window.alert("Registered Successfully!")
+              window.location.href = '/';
+            } else {
+
+              console.error('Process failed:', response.statusText);
+            }
+          } catch (error) {
+            console.error('Error during process:', error);
+          }
+        }
+
+
+        signupComplete();
+
+      }
+
+
+    } catch (err) {
+      console.log(err);
+    }
+
+  });
+</script>
+
+
+
+
+<%- include('footer.ejs') %>

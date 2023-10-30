@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  node_app:
+    build:
+      context: ./main-master  # Path to your Node.js app directory
+    ports:
+      - "3000:3000"  # Assuming your Node.js app runs on port 3000
+
+  flask_app:
+    build:
+      context: ./python-master  # Path to your Flask app directory
+    ports:
+      - "5000:5000"  # Assuming your Flask app runs on port 5000

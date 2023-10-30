@@ -1,0 +1,146 @@
+<%- include('header.ejs') %>
+
+<section class="bg-customColorBlack w-full h-screen">
+    <div class="pt-32 pb-12 text-black flex flex-col items-center">
+        <p class="text-3xl sm:text-5xl lg:text-6xl mx-32 text-white font-bold">Student List</p>
+    </div>
+    <div class="flex flex-col items-center">
+        <div class="flex flex-col w-4/5">
+            <form class="test-form">
+                <div class="flex">
+                    <div class="div-test w-1/5 mx-4">
+                        <input type="text" name="name" placeholder="Name"
+                            class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required />
+                    </div>
+
+                    <div class="div-test w-1/5 mx-4">
+                        <input type="text" name="rollNo" pattern="[0-9]+" placeholder="Roll No."
+                            class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required />
+                    </div>
+
+                    <div class="div-test w-1/5 mx-4">
+                        <select name="year"
+                            class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required>
+                            <option selected disabled>Choose Year</option>
+                            <option value="1st year">1st year</option>
+                            <option value="2nd year">2nd year</option>
+                            <option value="3rd year">3rd year</option>
+                            <option value="4th year">4th year</option>
+                        </select>
+                    </div>
+
+                    <div class="div-test w-1/5 mx-4">
+                        <select name="branch"
+                            class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option selected disabled>Choose Branch</option>
+                            <option value="CSE">CSE</option>
+                            <option value="MECH">MECH</option>
+                            <option value="CIVIL">CIVIL</option>
+                            <option value="ENTC">ENTC</option>
+                            <option value="CSE AI">CSE AI</option>
+                        </select>
+                    </div>
+
+                    <div class="button w-1/5 mx-4">
+                        <input type="submit" value="Search"
+                            class="bg-blue-500 w-full text-white font-semibold px-4 py-2 rounded-md hover:bg-blue-600 cursor-pointer">
+                    </div>
+                </div>
+            </form>
+
+            <table class="text-md bg-white shadow-md rounded-xl mt-12 mb-8">
+                <thead class="border-b">
+                    <tr>
+                        <th class="text-left p-4">Student Name</th>
+                        <th class="text-left p-4">Roll No.</th>
+                        <th class="text-left p-4">Year</th>
+                        <th class="text-left p-4">Branch</th>
+                        <th class="text-left p-4">Email ID</th>
+                        <th class="text-left p-4">Username</th>
+                        <th class="text-left p-4">Update / Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% details.forEach((info) => { %>
+                    <tr>
+                        <td class="p-4"><%= info.name %></td>
+                        <td class="p-4"><%= info.roll_no %></td>
+                        <td class="p-4"><%= info.year %></td>
+                        <td class="p-4"><%= info.branch %></td>
+                        <td class="p-4"><%= info.email %></td>
+                        <td class="p-4"><%= info.username %></td>
+                        <td class="p-4 flex justify-start items-center">
+                            <button>
+                                <a href="/specific-student-admin-view/<%= info._id %>"
+                                    class="px-4 py-2 rounded text-sm bg-blue-500 hover:bg-blue-700 text-white focus:outline-none focus:shadow-outline">View</a>
+                            </button>
+                        </td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+</section>
+
+
+<script>
+    const form = document.querySelector('.test-form');
+
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = form.name.value;
+        const rollNo = form.rollNo.value;
+        const year = form.year.value;
+        const branch = form.branch.value;
+
+
+        try {
+
+            const res = await fetch(`/admin-search-form-student-list`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    name: name,
+                    rollNo: rollNo,
+                    year: year,
+                    branch: branch
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await res.json();
+
+            if (data
+                .success
+            ) { //data represents the request sending object, where errors is created variable in request side
+
+                window.location.href = `/specific-student-admin-view/${data.success}`;
+
+            }
+
+
+
+            if (data
+                .failure) { // .failure is variable returned through json object from above route
+
+                window.alert(data.failure.message);
+                window.location.href = `/student-list-admin`;
+            }
+
+
+        } catch (err) {
+            console.log(err);
+        }
+
+
+    });
+</script>
+
+
+<%- include('footer.ejs') %>

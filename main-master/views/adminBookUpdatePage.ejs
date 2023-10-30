@@ -1,0 +1,87 @@
+<%- include('header.ejs') %>
+
+<section class="bg-customColorBlack w-full h-screen">
+    <div class="pt-32 pb-12 text-black flex flex-col items-center">
+        <p class="text-3xl sm:text-5xl lg:text-6xl mx-32 text-white font-bold">Update Book</p>
+    </div>
+    <div class="w-full flex flex-col justify-center">
+        <div class="w-full flex justify-center mt-0">
+            <div class="bg-white rounded-lg border-2 border-white flex flex-col w-2/3">
+                <div class="flex">
+                    <div class="img-div flex items-center m-2 w-1/4">
+                        <img src="<%= details.profileUrl %>" alt="Image" class="h-full w-full cover rounded-lg">
+                    </div>
+
+                    <div class="m-2 w-3/4">
+                        <form class="test-form" action="/api/admin-book-update/<%= details._id %>" method="post"
+                            enctype="multipart/form-data">
+                            <div
+                                class="fileUpload-block flex w-full m-2 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <div class="flex items-center font-bold text-lg">
+                                    <h3>Update Book Image (Not Mandatory)</h3>
+                                </div>
+                                <div class="mx-4">
+                                    <input type="file" name="file" />
+                                </div>
+                            </div>
+
+                            <div class="div-test flex w-full">
+                                <div class="w-1/2 m-2">
+                                    <input type="text" name="name" placeholder="Book name" value="<%= details.name %>"
+                                        class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        required />
+                                </div>
+                                <div class="div-test w-1/2 m-2">
+                                    <input type="text" name="author" placeholder="Author" value="<%= details.author %>"
+                                        class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        required />
+                                </div>
+                            </div>
+
+                            <div class="flex w-full">
+                                <div class="flex w-full m-2">
+                                    <div class="div-test w-1/2">
+                                        <select name="option"
+                                            class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            required>
+                                            <option selected disabled>Choose Genre</option>
+                                            <option value="fiction">Fiction</option>
+                                            <option value="biography">Biography</option>
+                                            <option value="history">History</option>
+                                            <option value="science">Science</option>
+                                            <option value="comic">Comic</option>
+                                            <option value="1st_year">1st year</option>
+                                            <option value="2nd_year">2nd year</option>
+                                            <option value="3rd_year">3rd year</option>
+                                            <option value="4th_year">4th year</option>
+                                        </select>
+                                    </div>
+                                    <div class="w-1/2 mt-2 mx-2">
+                                        <p>Previous Value: <%= details.genre %></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="div-test m-2">
+                                <textarea rows="5" cols="80" maxlength="500" name="description"
+                                    placeholder="Description"
+                                    class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    style="resize: none;" required><%= details.description %></textarea>
+                            </div>
+
+                            <div class="button flex justify-center w-full">
+                                <input type="submit" value="Update"
+                                    class="p-2 m-2 w-full text-white bg-blue-500 rounded-lg border-none">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<%- include('footer.ejs') %>

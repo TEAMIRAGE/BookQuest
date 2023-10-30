@@ -1,0 +1,121 @@
+<%- include('header.ejs') %>
+
+
+<form class = "test-form">
+        <div class="div-test">
+        <input type = "text" name = "name" placeholder="Name" required />
+        </div>
+
+        <div class="div-test">
+        <input type = "email" name = "email" placeholder="Email" required />
+        </div>
+        
+        <div class="div-test">
+            <input type = "text" name = "username" placeholder="username" required />
+            </div>
+        <div class = "signup-username-error"></div>
+
+        <div class="div-test">
+        <input type = "password" name = "password" placeholder="Password" required />
+        </div>
+        <div class = "signup-password-error"></div>
+        
+        <div class = "fileUpload-block">
+            <p> Upload Profile Image</p>
+            <input type="file"  name="file" required />
+        </div>
+
+        <div class="button">
+        <input type="submit" value="Signup">
+        </div>
+
+       
+</form>
+
+
+
+<script>
+    const form = document.querySelector('.test-form');
+    const userNameError = document.querySelector('.signup-username-error');
+    const passwordError = document.querySelector('.signup-password-error');
+    form.addEventListener('submit', async (e) =>{
+        e.preventDefault();
+
+      // reset errors
+      userNameError.textContent = '';
+      passwordError.textContent = '';
+
+
+        //get the values
+        const name = form.name.value;
+        const email = form.email.value;
+        const username = form.username.value;
+        const password = form.password.value;
+        const file = form.file.files[0];
+    
+        
+
+        try{  
+
+            const formInfo = new FormData();
+            formInfo.append('name', name);
+            formInfo.append('email', email);
+            formInfo.append('username', username);
+            formInfo.append('password', password);
+            formInfo.append('file', file);
+
+
+            
+
+
+        const res = await fetch('/admin-signup',{
+          method: 'POST',
+          body: formInfo,
+        });
+         
+        const data = await res.json();
+
+        if(data.errors){    //data represents the request sending object, where errors is created variable in request side
+        userNameError.textContent = data.errors.username;
+        passwordError.textContent = data.errors.password;
+        }
+      
+
+
+       if(data.newUser){   // .newUser is variable returned through json object from above route
+        
+        async function signupComplete() {
+  try {
+    const response = await fetch('/logout', {
+      method: 'GET'
+    });
+
+    if (response.ok) {
+      window.alert("Registered Successfully!")
+      window.location.href = '/';
+    } else {
+      
+      console.error('Process failed:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error during process:', error);
+  }
+}
+
+
+signupComplete();
+       
+}
+         
+
+      }catch(err){
+       console.log(err);
+        }
+        
+    });
+</script>
+
+
+
+
+<%- include('footer.ejs') %>

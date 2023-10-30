@@ -1,0 +1,148 @@
+<%- include('header.ejs') %>
+
+<section class="bg-customColorBlack w-full h-screen">
+    <div class="pt-32 pb-12 text-black flex flex-col items-center">
+        <p class="text-3xl sm:text-5xl lg:text-6xl mx-32 text-white font-bold">Student Database</p>
+    </div>
+
+    <div class="w-full flex flex-col justify-center">
+        <div class="flex justify-center">
+            <button id="data-id" data-id="<%= details._id %>"
+                class="border-none bg-red-600 text-white py-2 px-3 rounded-lg">Delete Account</button>
+        </div>
+        <div class="w-full flex justify-center mt-8">
+            <div class="bg-white rounded-lg border-2 border-white flex flex-col w-2/3">
+                <div class="flex">
+                    <div class="img-div flex items-center m-2 w-1/4">
+                        <img src="<%= details.profileUrl %>" alt="Image" class="h-full w-full cover rounded-lg">
+                    </div>
+
+                    <div class="m-2 w-3/4">
+                        <form class="test-form" action="/api/admin-student-update/<%= details._id %>" method="post"
+                            enctype="multipart/form-data">
+                            <div
+                                class="fileUpload-block flex w-full m-2 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <div class="flex items-center font-bold text-lg">
+                                    <h3>Update Profile Image (Not mandatory)</h3>
+                                </div>
+                                <div class="mx-4">
+                                    <input type="file" name="file" />
+                                </div>
+                            </div>
+
+                            <div class="div-test flex w-full">
+                                <div class="w-1/2 m-2">
+                                    <input type="text" name="name" placeholder="Book name" value="<%= details.name %>"
+                                        class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        required />
+                                </div>
+                                <div class="w-1/2 m-2">
+                                    <input type="text" name="rollNo" pattern="[0-9]+" placeholder="Roll No."
+                                        value="<%= details.roll_no %>"
+                                        class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        required />
+                                </div>
+                            </div>
+
+                            <div class="flex w-full">
+                                <div class="flex flex-col w-1/2 m-2">
+                                    <div class="div-test">
+                                        <select name="year"
+                                            class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            required>
+                                            <option selected disabled>Choose Year</option>
+                                            <option value="1st year">1st year</option>
+                                            <option value="2nd year">2nd year</option>
+                                            <option value="3rd year">3rd year</option>
+                                            <option value="4th year">4th year</option>
+                                        </select>
+                                    </div>
+                                    <div class="mt-2 mx-2">
+                                        <p>Previous Value: <%= details.year %></p>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col w-1/2 m-2">
+                                    <div class="div-test">
+                                        <select name="branch"
+                                            class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                            <option selected disabled>Choose Branch</option>
+                                            <option value="CSE">CSE</option>
+                                            <option value="MECH">MECH</option>
+                                            <option value="CIVIL">CIVIL</option>
+                                            <option value="ENTC">ENTC</option>
+                                            <option value="CSE AI">CSE AI</option>
+                                        </select>
+                                    </div>
+                                    <div class="mt-2 mx-2">
+                                        <p>Previous Value: <%= details.branch %></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="div-test m-2">
+                                <input type="text" name="email" placeholder="Email Id" value="<%= details.email %>"
+                                    class="border border-blue-800 px-4 py-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required />
+                            </div>
+
+                            <div class="button flex justify-center w-full">
+                                <input type="submit" value="Update"
+                                    class="p-2 m-2 w-full text-white bg-blue-500 rounded-lg border-none">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const hiddenId = document.getElementById('data-id');
+    const dataId = hiddenId.getAttribute('data-id');
+
+    hiddenId.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+
+            const res = await fetch(`/api/admin/student-delete/${dataId}`, {
+                method: 'GET',
+            });
+
+            const data = await res.json();
+
+            if (data
+                .success
+            ) { //data represents the request sending object, where errors is created variable in request side
+                window.alert(data.success.message);
+                window.location.href = `/student-list-admin`;
+
+            }
+
+
+
+            if (data.failure) { // .failure is variable returned through json object from above route
+
+                window.alert(data.failure.message);
+                window.location.href = `/specific-student-admin-view/${data.failure.id}`;
+            }
+
+
+        } catch (err) {
+            console.log(err);
+        }
+
+
+    });
+</script>
+
+
+
+
+
+
+
+
+
+<%- include('footer.ejs') %>

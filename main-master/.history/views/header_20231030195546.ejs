@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AFourathon | Lib Management</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
+    />
+    <link rel="stylesheet" href="../css/output.css" />
+    <link rel="stylesheet" href="../css/header.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+
+  <body>
+    <main class="h-screen">
+      <nav
+        class="navbar bg-transparent text-white bg-opacity-50 sticky top-0 left-0 right-0 navbar-scroll"
+      >
+        <a href="/" class="nav-branding w-auto">BookQuest</a>
+
+        <ul class="nav-menu w-[60%] flex justify-between">
+          <div class="nav-menu-sub flex">
+            <li class="nav-item mx-4">
+              <a href="/" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item mx-4">
+              <a href="/aboutUs" class="nav-link">About Us</a>
+            </li>
+            <li class="nav-item mx-4">
+              <a href="/book-gallery" class="nav-link">Book Gallery</a>
+            </li>
+          </div>
+          <div class="nav-menu-sub flex items-center">
+            <% if (user) {%>
+            <li class="nav-item mx-4">
+              <div class="max-w-lg mx-auto">
+                <div class="flex">
+                  <div class="flex mx-4 py-2.5">
+                    <h3>
+                      <a href="/student-notifications"
+                        ><i
+                          class="fa fa-bell duration-500 hover:scale-110"
+                          style="font-size: 32px; color: goldenrod"
+                        ></i
+                      ></a>
+                    </h3>
+                    <% if (user.messageCount > 0){ %>
+                    <span><%= user.messageCount %></span>
+                    <% } else {%>
+                    <span>0</span>
+                    <% } %>
+                  </div>
+                  <img
+                    src="<%= user.profileUrl %>"
+                    alt=""
+                    class="py-2.5 rounded-full h-[3.25rem] w-[3.25rem]"
+                  />
+                  <button
+                    class="text-white bg-transparent rounded-lg text-md px-4 py-2.5 text-center inline-flex items-center"
+                    type="button"
+                    data-dropdown-toggle="dropdown"
+                  >
+                    <%= user.name %>
+                    <svg
+                      class="w-4 h-4 ml-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- Dropdown menu -->
+                <div
+                  class="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4"
+                  id="dropdown"
+                >
+                  <ul class="py-1" aria-labelledby="dropdown">
+                    <li>
+                      <a
+                        href="/student-profile/<%= user._id %>"
+                        class="block text-sm hover:bg-gray-100 text-gray-700 block px-16 py-2"
+                        >Profile</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item mx-4">
+              <a href="/logout" class="nav-link">Logout</a>
+            </li>
+
+            <% } else if (admin) { %>
+            <li class="nav-item mx-4">
+              <div class="max-w-lg mx-auto">
+                <div class="flex">
+                  <img
+                    src="<%= admin.profileUrl %>"
+                    alt=""
+                    class="py-2.5 rounded-full h-[3.25rem] w-[3.25rem]"
+                  />
+                  <button
+                    class="text-white bg-transparent rounded-lg text-md px-4 py-2.5 text-center inline-flex items-center"
+                    type="button"
+                    data-dropdown-toggle="dropdown"
+                  >
+                    <%= admin.name %>
+                    <svg
+                      class="w-4 h-4 ml-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- Dropdown menu -->
+                <div
+                  class="hidden bg-white text-base z-50 list-none divide-y divide-gray-100 rounded shadow my-4"
+                  id="dropdown"
+                >
+                  <ul class="py-1" aria-labelledby="dropdown">
+                    <li>
+                      <a
+                        href="/admin-profile/<%= admin._id %>"
+                        class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
+                        >Profile</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="/new-book-registration-form"
+                        class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
+                        >Register New Book</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="/account-request-list"
+                        class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
+                        >Account Requests</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="/book-request-list"
+                        class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
+                        >Book Requests</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="/book-transaction-logs"
+                        class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
+                        >Book Transaction Logs</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="/all-books-info"
+                        class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
+                        >Book Details</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="/student-list-admin"
+                        class="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
+                        >Student Details</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item mx-4">
+              <a href="/logout" class="nav-link">Logout</a>
+            </li>
+
+            <% } else {%>
+
+            <li class="nav-item mx-4">
+              <a href="/login-options" class="nav-link">Login</a>
+            </li>
+            <li class="nav-item mx-4">
+              <a href="/student-signup" class="nav-link">Signup</a>
+            </li>
+
+            <% } %>
+          </div>
+        </ul>
+
+        <div class="hamburger hamburger-scroll">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </nav>
+    </main>
+  </body>
+</html>

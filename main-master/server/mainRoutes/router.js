@@ -25,7 +25,6 @@ const {
   requireAdminAuth,
 } = require("../authentication/authMiddleware.js");
 const renderPages = require("../mainRenders/render.js");
-const pythonControl = require("../pythonController/AiPowered.js");
 
 //Setting up express router
 const route = express.Router();

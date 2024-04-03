@@ -21,3 +21,11 @@ Moving forward, BookQuest aims to broaden its scope by including additional feat
 
 # Built With
 docker, express.js, flask, google-cloud, javascript, jwt, mongodb, node.js, npm, tailwindcss, vertexai.
+
+# Demo video Link:
+https://www.youtube.com/watch?v=w07ZclRZqio
+
+# Contributors
+## Giridhari Singh Bisht - https://www.linkedin.com/in/giridhari-singh-bisht-5078b1205/
+## Aditya Vikram Singh - https://www.linkedin.com/in/adivikramp/
+## Saksham Patel - https://www.linkedin.com/in/saksham-patel-b876b2201/
